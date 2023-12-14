@@ -7,7 +7,7 @@ import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredientials } from '../slices/authSlice';
 import {toast} from 'react-toastify';
 
-const LoginScreen = () => {
+const AdminLoginScreen = () => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
@@ -29,7 +29,6 @@ useEffect(() => {
   try {
     const res= await login({ email,password }).unwrap();
     dispatch(setCredientials({ ...res }));
-    console.log(res)
     navigate('/');
   } catch (err) {
     toast.error(err?.data?.message || err.error);
@@ -70,4 +69,4 @@ useEffect(() => {
     )
 
 }
-export default LoginScreen;
+export default AdminLoginScreen;

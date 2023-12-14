@@ -1,17 +1,43 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import { Link ,useNavigate } from 'react-router-dom';
 import { Form,Button,Row,Col } from 'react-bootstrap'
-import FormContainer from '../components/FormContainer'
+import { useDispatch,useSelector } from 'react-redux';
+import FormContainer from '../components/FormContainer';
+import { useRegisterMutation  } from '../slices/usersApiSlice';
+import { setCredientials } from '../slices/authSlice';
+
 
 const RegisterScreen = () => {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [confirmPassword,setConfirmPassword] = useState('');
+ 
+    const navigate = useNavigate();
 
+    const [register,{isLoading}] = useRegisterMutation();
+
+    // useEffect(() => {
+    //   if(userInfo){
+    //     navigate('/');
+    //   }
+    //   },[navigate,userInfo])
+    
+    const { userInfo } = useSelector((state) => state.auth)
     const submitHandler = async (e) => {
         e.preventDefault();
-        console.log('submit')
+        if(password !== confirmPassword){
+          toast.error('Passwords do not match')
+        }
+        else{
+          try {
+            const res = await register({name,email,password}).unwrap();
+            dispatchEvent(setCredientials({ ...res}));
+            navigate('/')
+          } catch (error) {
+            
+          }
+        }
     }
 
     return (
@@ -24,7 +50,7 @@ const RegisterScreen = () => {
                type = 'text'
                placeholder = 'Enter Name'
                value = {name}
-               onChange = { (e) => setName(e.target)}
+               onChange = { (e) => setName(e.target.value)}
               ></Form.Control>
                </Form.Group>
 
@@ -34,7 +60,7 @@ const RegisterScreen = () => {
                type = 'email'
                placeholder = 'Enter Email'
                value = {email}
-               onChange = { (e) => setEmail(e.target)}
+               onChange = { (e) => setEmail(e.target.value)}
               ></Form.Control>
                </Form.Group>
 
@@ -44,7 +70,7 @@ const RegisterScreen = () => {
                type = 'password'
                placeholder = 'Enter Password'
                value = {password}
-               onChange = { (e) => setPassword(e.target)}
+               onChange = { (e) => setPassword(e.target.value)}
               ></Form.Control>
                </Form.Group>
                <Form.Group className='my-2' controlId = 'confirmPassword'>
@@ -53,7 +79,7 @@ const RegisterScreen = () => {
                type = 'password'
                placeholder = 'Confirm Password'
                value = {confirmPassword}
-               onChange = { (e) => setConfirmPassword(e.target)}
+               onChange = { (e) => setConfirmPassword(e.target.value)}
               ></Form.Control>
                </Form.Group>
                <Button type='submit' variant='primary' className='mt-3'>Sign Up</Button>

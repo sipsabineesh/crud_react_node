@@ -8,9 +8,7 @@ const Hero = () => {
         <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
           <h1 className='text-center mb-4'>User Mangement System</h1>
           <p className='text-center mb-4'>
-            This is a boilerplate for MERN authentication that stores a JWT in
-            an HTTP-Only cookie. It also uses Redux Toolkit and the React
-            Bootstrap library
+          
           </p>
           <div className='d-flex'>
           <LinkContainer to='/login'>

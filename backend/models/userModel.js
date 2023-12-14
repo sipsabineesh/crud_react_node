@@ -14,8 +14,13 @@ const userSchema =  mongoose.Schema(
     },
     password:{
         type : String,
-        required : true
+        // required : true
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
     }
+
 },{
         timestamps:true
     }
