@@ -3,8 +3,8 @@ import { Link ,useNavigate } from 'react-router-dom';
 import { Form,Button,Row,Col } from 'react-bootstrap';
 import { useDispatch,useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
+import { setCredentials } from '../slices/authSlice';
 import { useLoginMutation } from '../slices/usersApiSlice';
-import { setCredientials } from '../slices/authSlice';
 import {toast} from 'react-toastify';
 
 const LoginScreen = () => {
@@ -27,12 +27,13 @@ useEffect(() => {
     const submitHandler = async (e) => {
         e.preventDefault();
   try {
-    const res= await login({ email,password }).unwrap();
-    dispatch(setCredientials({ ...res }));
-    console.log(res)
+    const res = await login({ email,password }).unwrap();
+    dispatch(setCredentials({ ...res }));
     navigate('/');
   } catch (err) {
     toast.error(err?.data?.message || err.error);
+    setEmail("")
+    setPassword("")
   }
       }
 

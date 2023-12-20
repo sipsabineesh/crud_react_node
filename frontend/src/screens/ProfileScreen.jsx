@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
+import { setCredentials } from '../slices/authSlice';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
-import { setCredientials } from '../slices/authSlice';
-// import { setCredentials } from '../slices/authSlice';
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState('');
@@ -19,10 +18,10 @@ const ProfileScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
 
-//   useEffect(() => {
-//     setName(userInfo.name);
-//     setEmail(userInfo.email);
-//   }, [userInfo.email, userInfo.name]);
+  useEffect(() => {
+    setName(userInfo.name);
+    setEmail(userInfo.email);
+  }, [userInfo.setName, userInfo.setEmail]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,11 +35,11 @@ const ProfileScreen = () => {
         email,
         password
     }).unwrap();
-    dispatch(setCredientials({ ...res}))
+    dispatch(setCredentials({...res}))
         toast.success('Profile updated')
     }
  catch (err) {
-    // toast.error(err?data?.message)
+     toast.error(err?.data?.message||err.error)
  }    }
   };
   return (

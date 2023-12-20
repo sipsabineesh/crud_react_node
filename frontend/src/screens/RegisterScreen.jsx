@@ -4,8 +4,8 @@ import { Form,Button,Row,Col } from 'react-bootstrap'
 import { useDispatch,useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { useRegisterMutation  } from '../slices/usersApiSlice';
-import { setCredientials } from '../slices/authSlice';
-
+import { setCredentials } from '../slices/authSlice';
+import {toast} from 'react-toastify';
 
 const RegisterScreen = () => {
     const [name,setName] = useState('');
@@ -16,24 +16,27 @@ const RegisterScreen = () => {
     const navigate = useNavigate();
 
     const [register,{isLoading}] = useRegisterMutation();
-
-    // useEffect(() => {
-    //   if(userInfo){
-    //     navigate('/');
-    //   }
-    //   },[navigate,userInfo])
     
     const { userInfo } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+      if(userInfo){
+        navigate('/');
+      }
+      },[navigate,userInfo])
     const submitHandler = async (e) => {
         e.preventDefault();
         if(password !== confirmPassword){
           toast.error('Passwords do not match')
+          setPassword("")
+          setConfirmPassword("")
+
         }
         else{
           try {
             const res = await register({name,email,password}).unwrap();
-            dispatchEvent(setCredientials({ ...res}));
-            navigate('/')
+            // dispatchEvent(setCredentials({ ...res}));
+            navigate('/login')
           } catch (error) {
             
           }

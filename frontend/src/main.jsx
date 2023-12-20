@@ -25,6 +25,12 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
       </Route>
+      {/* <Route path='' element={<AdminRoute />}>
+        <Route path='admin/list' element={<ListScreen />} />
+        <Route path='admin/create' element={<CreateScreen />} />
+        <Route path='admin/update' element={<UpdateScreen />} />
+        <Route path='admin/delete' element={<DeleteScreen />} />
+      </Route> */}
     </Route>
   )
 );
