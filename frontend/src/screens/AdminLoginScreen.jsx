@@ -2,9 +2,9 @@ import { useState,useEffect } from 'react';
 import { Link ,useNavigate } from 'react-router-dom';
 import { Form,Button,Row,Col } from 'react-bootstrap';
 import { useDispatch,useSelector } from 'react-redux';
-import FormContainer from '../../components/FormContainer';
-import { useLoginMutation } from '../../slices/usersApiSlice';
-import { setCredientials } from '../../slices/authSlice';
+import FormContainer from '../components/FormContainer';
+import { setCredentials } from '../slices/authSlice';
+import { useAdminLoginMutation } from '../slices/usersApiSlice'
 import {toast} from 'react-toastify';
 
 const AdminLoginScreen = () => {
@@ -14,22 +14,22 @@ const AdminLoginScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [login,{isLoading}] = useLoginMutation();
+    const [adminLogin,{isLoading}] = useAdminLoginMutation();
 
-    const { userInfo } = useSelector((state) => state.auth)
+   const { userInfo } = useSelector((state) => state.auth)
 
 useEffect(() => {
   if(userInfo){
-    navigate('/');
+    navigate('/getUsers');
   }
   },[navigate,userInfo])
 
     const submitHandler = async (e) => {
         e.preventDefault();
   try {
-    const res= await login({ email,password }).unwrap();
-    dispatch(setCredientials({ ...res }));
-    navigate('/');
+    const res= await adminLogin({ email,password }).unwrap();
+    dispatch(setCredentials({ ...res }));
+    navigate('/getUsers');
   } catch (err) {
     toast.error(err?.data?.message || err.error);
   }
@@ -37,7 +37,7 @@ useEffect(() => {
 
     return (
         <FormContainer>
-             <h1>Sign In</h1>
+             <h1>Admin Sign In</h1>
              <Form onSubmit={ submitHandler }>
                 <Form.Group className='my-2' controlId = 'email'>
                 <Form.Label>Email Address</Form.Label>
@@ -59,11 +59,11 @@ useEffect(() => {
               ></Form.Control>
                </Form.Group>
                <Button type='submit' variant='primary' className='mt-3'>Sign In</Button>
-               <Row>
+               {/* <Row>
                 <Col>
                 New Customer? <Link to='/register'>Sign Up</Link>
                 </Col>
-               </Row>
+               </Row> */}
              </Form>
         </FormContainer>
     )
